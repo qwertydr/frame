@@ -3,21 +3,48 @@
 const framesData = [
     {
         id: 1,
-        eventName: "Tech Summit 2025",
-        details: "Annual Developer Meetup",
+        eventName: "Open to Work",
+        details: "Open to Work",
         eventBy: "DevCommunity",
         graphicsBy: "John Doe",
-        socialLink: "https://twitter.com",
-        framePath: "https://qwertydr.github.io/frame/frame.png" 
+        socialLink: "#",
+        framePath: "https://eframe.me/frames/frame.png" 
     },
     {
         id: 2,
-        eventName: "Alumni Reunion",
-        details: "Batch of 2020",
-        eventBy: "University Board",
+        eventName: "Class of (Graduation)",
+        details: "Class of (Graduation)",
+        eventBy: "School Board",
         graphicsBy: "Jane Smith",
-        socialLink: "https://linkedin.com",
-        framePath: "https://qwertydr.github.io/frame/frame.png"
+        socialLink: "#",
+        framePath: "https://eframe.me/frames/fm1.png"
+    },
+    {
+        id: 3,
+        eventName: "Class of (Graduation)",
+        details: "Class of (Graduation)",
+        eventBy: "School Board",
+        graphicsBy: "Jane Smith",
+        socialLink: "#",
+        framePath: "https://eframe.me/frames/fm2.png"
+    },
+    {
+        id: 4,
+        eventName: "Class of (Graduation)",
+        details: "Class of (Graduation)",
+        eventBy: "School Board",
+        graphicsBy: "Jane Smith",
+        socialLink: "#",
+        framePath: "https://eframe.me/frames/fm3.png"
+    },
+    {
+        id: 5,
+        eventName: "Class of (Graduation)",
+        details: "Class of (Graduation)",
+        eventBy: "School Board",
+        graphicsBy: "Jane Smith",
+        socialLink: "#",
+        framePath: "https://eframe.me/frames/fm4.png"
     }
 ];
 
