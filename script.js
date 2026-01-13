@@ -12,39 +12,12 @@ const framesData = [
     },
     {
         id: 2,
-        eventName: "Class of (Graduation) 1",
-        details: "Class of (Graduation)",
-        eventBy: "School Board",
-        graphicsBy: "Jane Smith",
-        socialLink: "#",
-        framePath: "https://eframe.me/frames/fm1.png"
-    },
-    {
-        id: 3,
-        eventName: "Class of (Graduation) 2",
+        eventName: "Class of (Graduation)",
         details: "Class of (Graduation)",
         eventBy: "School Board",
         graphicsBy: "Jane Smith",
         socialLink: "#",
         framePath: "https://eframe.me/frames/fm2.png"
-    },
-    {
-        id: 4,
-        eventName: "Class of (Graduation) 3",
-        details: "Class of (Graduation)",
-        eventBy: "School Board",
-        graphicsBy: "Jane Smith",
-        socialLink: "#",
-        framePath: "https://eframe.me/frames/fm3.png"
-    },
-    {
-        id: 5,
-        eventName: "Class of (Graduation) 4",
-        details: "Class of (Graduation)",
-        eventBy: "School Board",
-        graphicsBy: "Jane Smith",
-        socialLink: "#",
-        framePath: "https://eframe.me/frames/fm4.png"
     }
 ];
 
