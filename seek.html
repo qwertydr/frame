@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frame Generator Pro</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --white: #ffffff;
+            --black: #000000;
+            --red: #e63946;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--black);
+            background-color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--red);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--white);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            color: var(--red);
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Home Section */
+        .home-section {
+            display: block;
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--black);
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #searchInput:focus {
+            border-color: var(--red);
+        }
+
+        .frames-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .frame-card {
+            background: var(--white);
+            border: 2px solid var(--black);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .frame-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            border-color: var(--red);
+        }
+
+        .frame-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .frame-info {
+            padding: 1rem;
+        }
+
+        .frame-info h3 {
+            color: var(--red);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Editor Section */
+        .editor-section {
+            display: none;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .editor-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .canvas-container {
+            position: relative;
+            border: 2px solid var(--black);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--light-gray);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #resultCanvas {
+            max-width: 100%;
+            max-height: 500px;
+            display: none;
+        }
+
+        .controls-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .control-group {
+            background: var(--white);
+            border: 2px solid var(--black);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .control-group h3 {
+            color: var(--red);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--light-gray);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--red);
+            cursor: pointer;
+        }
+
+        button {
+            background-color: var(--black);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid var(--black);
+        }
+
+        button:hover {
+            background-color: var(--red);
+            transform: translateY(-2px);
+        }
+
+        .social-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .social-btn {
+            padding: 0.6rem;
+            font-size: 0.9rem;
+        }
+
+        .social-btn.active {
+            background-color: var(--red);
+        }
+
+        /* Download Section */
+        .download-section {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .download-form {
+            max-width: 400px;
+            margin: 2rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .download-form input {
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--black);
+            border-radius: 5px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .download-form input:focus {
+            border-color: var(--red);
+        }
+
+        #downloadBtn {
+            background-color: var(--red);
+            font-size: 1.1rem;
+            padding: 1rem;
+        }
+
+        #downloadBtn:hover {
+            background-color: var(--black);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--red);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--red);
+        }
+
+        .submit-design {
+            background-color: var(--red);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+            border: 2px solid var(--red);
+            transition: all 0.3s;
+        }
+
+        .submit-design:hover {
+            background-color: transparent;
+            color: var(--red);
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--red);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Navigation */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+                display: none;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                right: 2rem;
+                top: 1rem;
+            }
+
+            .frames-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .social-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 1rem;
+            }
+
+            .frames-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .control-group {
+                padding: 1rem;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .active-section {
+            display: block !important;
+        }
+
+        .preview-image {
+            max-width: 300px;
+            max-height: 300px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">Frame<span>Generator</span></a>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+            <nav>
+                <ul id="mainNav">
+                    <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-section="submit">Submit Design</a></li>
+                    <li><a href="#" class="submit-design">Submit Your Design</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="homeSection" class="home-section active-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search frames by event name, details, or creator...">
+            </div>
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Loading frames...</p>
+            </div>
+            <div id="framesContainer" class="frames-grid">
+                <!-- Frames will be loaded here -->
+            </div>
+        </section>
+
+        <!-- Editor Section -->
+        <section id="editorSection" class="editor-section">
+            <h2>Customize Your Frame</h2>
+            <div class="editor-container">
+                <div class="canvas-container">
+                    <img id="uploadedImage" class="preview-image hidden" alt="Uploaded image">
+                    <img id="selectedFrame" class="preview-image" alt="Selected frame">
+                    <canvas id="resultCanvas"></canvas>
+                </div>
+                <div class="controls-container">
+                    <div class="control-group">
+                        <h3>Upload Your Photo</h3>
+                        <input type="file" id="imageUpload" accept="image/*">
+                        <button id="removeImage" class="hidden">Remove Photo</button>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Position & Scale</h3>
+                        <div class="control-row">
+                            <label>Position X:</label>
+                            <input type="range" id="posX" min="-100" max="100" value="0">
+                            <span id="posXValue">0</span>
+                        </div>
+                        <div class="control-row">
+                            <label>Position Y:</label>
+                            <input type="range" id="posY" min="-100" max="100" value="0">
+                            <span id="posYValue">0</span>
+                        </div>
+                        <div class="control-row">
+                            <label>Scale:</label>
+                            <input type="range" id="scale" min="50" max="200" value="100">
+                            <span id="scaleValue">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Rotation</h3>
+                        <div class="control-row">
+                            <label>Rotate:</label>
+                            <input type="range" id="rotation" min="0" max="360" value="0">
+                            <span id="rotationValue">0°</span>
+                        </div>
+                        <button id="rotateLeft">↶ Rotate Left</button>
+                        <button id="rotateRight">↷ Rotate Right</button>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Social Media Platforms</h3>
+                        <div class="social-buttons">
+                            <button class="social-btn" data-platform="linkedin">LinkedIn</button>
+                            <button class="social-btn" data-platform="facebook">Facebook</button>
+                            <button class="social-btn active" data-platform="instagram">Instagram</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Generate & Download</h3>
+                        <button id="generateBtn">Generate Preview</button>
+                        <button id="proceedToDownload" class="hidden">Proceed to Download</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Download Section -->
+        <section id="downloadSection" class="download-section">
+            <h2>Download Your Creation</h2>
+            <p>Enter your details to download your framed image</p>
+            
+            <form class="download-form" id="downloadForm">
+                <input type="text" id="userName" placeholder="Your Name" required>
+                <input type="email" id="userEmail" placeholder="Your Email" required>
+                <button type="submit" id="downloadBtn">Download Image</button>
+            </form>
+
+            <div id="downloadPreview" class="canvas-container hidden">
+                <canvas id="finalCanvas"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Frame Generator</h3>
+                <p>Create amazing framed images for your social media profiles.</p>
+                <a href="#" class="submit-design">Submit Your Design</a>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#" class="nav-link" data-section="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-section="editor">Editor</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>Email: support@framegenerator.com</li>
+                    <li>Phone: (555) 123-4567</li>
+                    <li>Follow us on social media</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample JSON Data
+        const framesData = [
+            {
+                "id": 1,
+                "eventName": "Tech Conference 2024",
+                "eventDetails": "Annual technology innovation conference featuring industry leaders",
+                "eventBy": "Tech Innovators Inc.",
+                "graphicsCreatedBy": {
+                    "name": "Alex Designer",
+                    "socialLink": "https://twitter.com/alexdesigner"
+                },
+                "framePNG": "https://via.placeholder.com/400x400/FF0000/FFFFFF?text=Tech+Frame"
+            },
+            {
+                "id": 2,
+                "eventName": "Music Festival",
+                "eventDetails": "Weekend music festival with multiple stages and artists",
+                "eventBy": "Music Events Co.",
+                "graphicsCreatedBy": {
+                    "name": "DJ Creative",
+                    "socialLink": "https://instagram.com/djcreative"
+                },
+                "framePNG": "https://via.placeholder.com/400x400/0000FF/FFFFFF?text=Music+Frame"
+            },
+            {
+                "id": 3,
+                "eventName": "Business Summit",
+                "eventDetails": "Global business leadership summit",
+                "eventBy": "Business Leaders Group",
+                "graphicsCreatedBy": {
+                    "name": "Sarah Artworks",
+                    "socialLink": "https://linkedin.com/in/sarahartworks"
+                },
+                "framePNG": "https://via.placeholder.com/400x400/00FF00/000000?text=Business+Frame"
+            },
+            {
+                "id": 4,
+                "eventName": "Sports Championship",
+                "eventDetails": "National sports championship finals",
+                "eventBy": "Sports Association",
+                "graphicsCreatedBy": {
+                    "name": "Mike Designs",
+                    "socialLink": "https://facebook.com/mikedesigns"
+                },
+                "framePNG": "https://via.placeholder.com/400x400/FFFF00/000000?text=Sports+Frame"
+            },
+            {
+                "id": 5,
+                "eventName": "Art Exhibition",
+                "eventDetails": "Contemporary art exhibition",
+                "eventBy": "Art Museum",
+                "graphicsCreatedBy": {
+                    "name": "Creative Studio",
+                    "socialLink": "https://behance.net/creativestudio"
+                },
+                "framePNG": "https://via.placeholder.com/400x400/FF00FF/FFFFFF?text=Art+Frame"
+            },
+            {
+                "id": 6,
+                "eventName": "Charity Gala",
+                "eventDetails": "Annual charity fundraising gala",
+                "eventBy": "Charity Foundation",
+                "graphicsCreatedBy": {
+                    "name": "Design Pro",
+                    "socialLink": "https://dribbble.com/designpro"
+                },
+                "framePNG": "https://via.placeholder.com/400x400/00FFFF/000000?text=Charity+Frame"
+            }
+        ];
+
+        // Application State
+        const state = {
+            currentFrame: null,
+            uploadedImage: null,
+            position: { x: 0, y: 0 },
+            scale: 1,
+            rotation: 0,
+            currentPlatform: 'instagram',
+            generatedImage: null
+        };
+
+        // DOM Elements
+        const homeSection = document.getElementById('homeSection');
+        const editorSection = document.getElementById('editorSection');
+        const downloadSection = document.getElementById('downloadSection');
+        const framesContainer = document.getElementById('framesContainer');
+        const searchInput = document.getElementById('searchInput');
+        const loadingElement = document.getElementById('loading');
+        const selectedFrame = document.getElementById('selectedFrame');
+        const uploadedImage = document.getElementById('uploadedImage');
+        const resultCanvas = document.getElementById('resultCanvas');
+        const finalCanvas = document.getElementById('finalCanvas');
+        const imageUpload = document.getElementById('imageUpload');
+        const removeImageBtn = document.getElementById('removeImage');
+        const posXSlider = document.getElementById('posX');
+        const posYSlider = document.getElementById('posY');
+        const scaleSlider = document.getElementById('scale');
+        const rotationSlider = document.getElementById('rotation');
+        const posXValue = document.getElementById('posXValue');
+        const posYValue = document.getElementById('posYValue');
+        const scaleValue = document.getElementById('scaleValue');
+        const rotationValue = document.getElementById('rotationValue');
+        const generateBtn = document.getElementById('generateBtn');
+        const proceedToDownload = document.getElementById('proceedToDownload');
+        const socialButtons = document.querySelectorAll('.social-btn');
+        const downloadForm = document.getElementById('downloadForm');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+
+        // Platform dimensions
+        const platformDimensions = {
+            linkedin: { width: 400, height: 400 },
+            facebook: { width: 500, height: 500 },
+            instagram: { width: 600, height: 600 }
+        };
+
+        // Initialize Application
+        function init() {
+            loadFrames();
+            setupEventListeners();
+            setupMobileNavigation();
+        }
+
+        // Load frames from JSON data
+        function loadFrames() {
+            loadingElement.style.display = 'block';
+            framesContainer.innerHTML = '';
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                framesData.forEach(frame => {
+                    const frameCard = createFrameCard(frame);
+                    framesContainer.appendChild(frameCard);
+                });
+                loadingElement.style.display = 'none';
+            }, 500);
+        }
+
+        // Create frame card element
+        function createFrameCard(frame) {
+            const card = document.createElement('div');
+            card.className = 'frame-card';
+            card.dataset.id = frame.id;
+            
+            card.innerHTML = `
+                <img src="${frame.framePNG}" alt="${frame.eventName}" loading="lazy">
+                <div class="frame-info">
+                    <h3>${frame.eventName}</h3>
+                    <p>${frame.eventDetails.substring(0, 80)}...</p>
+                    <p><strong>By:</strong> ${frame.eventBy}</p>
+                    <p><strong>Designer:</strong> ${frame.graphicsCreatedBy.name}</p>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => selectFrame(frame));
+            return card;
+        }
+
+        // Select a frame
+        function selectFrame(frame) {
+            state.currentFrame = frame;
+            selectedFrame.src = frame.framePNG;
+            selectedFrame.alt = frame.eventName;
+            
+            // Reset transformations
+            state.position = { x: 0, y: 0 };
+            state.scale = 1;
+            state.rotation = 0;
+            
+            updateSliders();
+            showSection('editor');
+        }
+
+        // Show specific section
+        function showSection(sectionName) {
+            [homeSection, editorSection, downloadSection].forEach(section => {
+                section.classList.remove('active-section');
+            });
+            
+            if (sectionName === 'home') {
+                homeSection.classList.add('active-section');
+            } else if (sectionName === 'editor') {
+                editorSection.classList.add('active-section');
+            } else if (sectionName === 'download') {
+                downloadSection.classList.add('active-section');
+                renderFinalImage();
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = e.target.dataset.section;
+                    showSection(section);
+                    if (mainNav.classList.contains('show')) {
+                        mainNav.classList.remove('show');
+                    }
+                });
+            });
+
+            // Search
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.frame-card');
+                
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+                });
+            });
+
+            // Image upload
+            imageUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        uploadedImage.src = event.target.result;
+                        uploadedImage.classList.remove('hidden');
+                        state.uploadedImage = uploadedImage;
+                        removeImageBtn.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Remove image
+            removeImageBtn.addEventListener('click', () => {
+                uploadedImage.src = '';
+                uploadedImage.classList.add('hidden');
+                state.uploadedImage = null;
+                removeImageBtn.classList.add('hidden');
+                imageUpload.value = '';
+            });
+
+            // Slider controls
+            posXSlider.addEventListener('input', (e) => {
+                state.position.x = parseInt(e.target.value);
+                posXValue.textContent = state.position.x;
+            });
+
+            posYSlider.addEventListener('input', (e) => {
+                state.position.y = parseInt(e.target.value);
+                posYValue.textContent = state.position.y;
+            });
+
+            scaleSlider.addEventListener('input', (e) => {
+                state.scale = parseInt(e.target.value) / 100;
+                scaleValue.textContent = `${parseInt(e.target.value)}%`;
+            });
+
+            rotationSlider.addEventListener('input', (e) => {
+                state.rotation = parseInt(e.target.value);
+                rotationValue.textContent = `${state.rotation}°`;
+            });
+
+            // Rotation buttons
+            document.getElementById('rotateLeft').addEventListener('click', () => {
+                state.rotation = (state.rotation - 90) % 360;
+                rotationSlider.value = state.rotation;
+                rotationValue.textContent = `${state.rotation}°`;
+            });
+
+            document.getElementById('rotateRight').addEventListener('click', () => {
+                state.rotation = (state.rotation + 90) % 360;
+                rotationSlider.value = state.rotation;
+                rotationValue.textContent = `${state.rotation}°`;
+            });
+
+            // Social platform buttons
+            socialButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    socialButtons.forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    state.currentPlatform = e.target.dataset.platform;
+                });
+            });
+
+            // Generate button
+            generateBtn.addEventListener('click', generateImage);
+
+            // Proceed to download
+            proceedToDownload.addEventListener('click', () => {
+                showSection('download');
+            });
+
+            // Download form
+            downloadForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('userName').value;
+                const email = document.getElementById('userEmail').value;
+                
+                if (name && email) {
+                    downloadImage();
+                }
+            });
+
+            // Submit design buttons
+            document.querySelectorAll('.submit-design').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert('Submit Design feature coming soon! You can email your designs to submit@framegenerator.com');
+                });
+            });
+        }
+
+        // Setup mobile navigation
+        function setupMobileNavigation() {
+            mobileMenuBtn.addEventListener('click', () => {
+                mainNav.classList.toggle('show');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('nav') && !e.target.closest('.mobile-menu-btn')) {
+                    mainNav.classList.remove('show');
+                }
+            });
+        }
+
+        // Update sliders to match state
+        function updateSliders() {
+            posXSlider.value = state.position.x;
+            posYSlider.value = state.position.y;
+            scaleSlider.value = state.scale * 100;
+            rotationSlider.value = state.rotation;
+            
+            posXValue.textContent = state.position.x;
+            posYValue.textContent = state.position.y;
+            scaleValue.textContent = `${state.scale * 100}%`;
+            rotationValue.textContent = `${state.rotation}°`;
+        }
+
+        // Generate composite image
+        function generateImage() {
+            const dimensions = platformDimensions[state.currentPlatform];
+            const canvas = resultCanvas;
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = dimensions.width;
+            canvas.height = dimensions.height;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Create a temporary canvas for transformations
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            if (state.uploadedImage) {
+                // Set temp canvas size
+                tempCanvas.width = uploadedImage.naturalWidth || uploadedImage.width;
+                tempCanvas.height = uploadedImage.naturalHeight || uploadedImage.height;
+                
+                // Draw original image
+                tempCtx.drawImage(uploadedImage, 0, 0);
+                
+                // Calculate transformations
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const offsetX = (state.position.x / 100) * canvas.width;
+                const offsetY = (state.position.y / 100) * canvas.height;
+                
+                // Save context
+                ctx.save();
+                
+                // Move to center
+                ctx.translate(centerX + offsetX, centerY + offsetY);
+                
+                // Rotate
+                ctx.rotate(state.rotation * Math.PI / 180);
+                
+                // Scale
+                ctx.scale(state.scale, state.scale);
+                
+                // Draw image centered
+                ctx.drawImage(
+                    tempCanvas,
+                    -tempCanvas.width / 2,
+                    -tempCanvas.height / 2,
+                    tempCanvas.width,
+                    tempCanvas.height
+                );
+                
+                // Restore context
+                ctx.restore();
+            }
+            
+            // Draw frame on top
+            const frameImg = new Image();
+            frameImg.crossOrigin = "anonymous";
+            frameImg.onload = () => {
+                ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+                
+                // Show canvas and proceed button
+                resultCanvas.style.display = 'block';
+                proceedToDownload.classList.remove('hidden');
+                
+                // Store generated image
+                state.generatedImage = canvas.toDataURL('image/png');
+            };
+            frameImg.src = state.currentFrame.framePNG;
+        }
+
+        // Render final image for download
+        function renderFinalImage() {
+            if (!state.generatedImage) return;
+            
+            const canvas = finalCanvas;
+            const ctx = canvas.getContext('2d');
+            const dimensions = platformDimensions[state.currentPlatform];
+            
+            canvas.width = dimensions.width;
+            canvas.height = dimensions.height;
+            
+            const img = new Image();
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+                document.getElementById('downloadPreview').classList.remove('hidden');
+            };
+            img.src = state.generatedImage;
+        }
+
+        // Download image
+        function downloadImage() {
+            if (!state.generatedImage) return;
+            
+            const link = document.createElement('a');
+            link.download = `framed-image-${state.currentPlatform}-${Date.now()}.png`;
+            link.href = state.generatedImage;
+            link.click();
+            
+            // Show success message
+            alert('Image downloaded successfully! Check your downloads folder.');
+            
+            // Reset form
+            downloadForm.reset();
+            
+            // Return to home
+            setTimeout(() => showSection('home'), 1000);
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
