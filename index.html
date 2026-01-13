@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Frame Generator</title>
+    <title>Event Frame Generator | eFrame.me</title>
+    
+    <meta name="description" content="Create custom event frames for your profile pictures instantly. Upload, edit, and share on social media.">
+    <meta name="keywords" content="frame generator, profile picture frame, event frames, eframe, overlay, facebook frame, linkedin frame">
+    <meta name="author" content="eFrame.me">
+    <link rel="canonical" href="https://eframe.me">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eframe.me">
+    <meta property="og:title" content="Event Frame Generator | eFrame.me">
+    <meta property="og:description" content="Create custom event frames for your profile pictures instantly at eFrame.me.">
+    <meta property="og:image" content="https://eframe.me/assets/og-image.jpg">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://eframe.me">
+    <meta property="twitter:title" content="Event Frame Generator | eFrame.me">
+    <meta property="twitter:description" content="Create custom event frames for your profile pictures instantly.">
+    <meta property="twitter:image" content="https://eframe.me/assets/twitter-image.jpg">
+
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <header>
-        <div class="logo">FrameGen</div>
+        <div class="logo">eFrame.me</div>
         <nav>
-            <a href="#" class="btn-secondary">Submit Your Design</a>
+            <button id="open-submit-modal" class="btn-secondary">Submit Your Design Free</button>
         </nav>
     </header>
 
@@ -20,7 +38,7 @@
         
         <section id="gallery-view">
             <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Search events (e.g., 'Hackathon', 'Reunion')...">
+                <input type="text" id="search-input" placeholder="Search events (e.g., 'Hackathon')...">
                 <button id="search-btn"><i class="fas fa-search"></i></button>
             </div>
             <div class="frames-grid" id="frames-grid">
@@ -28,12 +46,14 @@
         </section>
 
         <section id="editor-view" class="hidden">
-            <button id="back-btn" class="btn-text"><i class="fas fa-arrow-left"></i> Back to Gallery</button>
+            <div class="editor-header">
+                <button id="back-btn" class="btn-text"><i class="fas fa-arrow-left"></i> Back to Gallery</button>
+                <button id="share-btn" class="btn-text"><i class="fas fa-share-alt"></i> Share Tool</button>
+            </div>
             
             <div class="editor-layout">
                 <div class="canvas-container">
                     <canvas id="main-canvas"></canvas>
-                    <div class="loading-overlay hidden" id="loading-msg">Generating...</div>
                 </div>
 
                 <div class="controls-panel">
@@ -60,20 +80,24 @@
                     <hr>
 
                     <div class="control-group">
-                        <h3>Finalize & Download</h3>
-                        <p class="hint">Select platform format (All outputs are high-quality square)</p>
+                        <h3>Download</h3>
+                        <p class="hint">Select platform preview:</p>
                         <div class="platform-selector">
                             <button class="platform-btn active" data-platform="linkedin"><i class="fab fa-linkedin"></i></button>
                             <button class="platform-btn" data-platform="facebook"><i class="fab fa-facebook"></i></button>
                             <button class="platform-btn" data-platform="instagram"><i class="fab fa-instagram"></i></button>
                         </div>
 
-                        <input type="text" id="user-name" placeholder="Full Name" required>
-                        <input type="email" id="user-email" placeholder="Email Address" required>
-                        
-                        <button id="download-btn" class="btn-primary full-width disabled" disabled>
-                            <i class="fas fa-download"></i> Download Image
-                        </button>
+                        <form id="subscribe-form" onsubmit="return false;">
+                            <input type="text" id="user-name" placeholder="Full Name" required>
+                            <input type="email" id="user-email" placeholder="Email Address" required>
+                            <p id="email-error" class="error-msg hidden">Please enter a valid email address.</p>
+                            <p id="api-status" class="status-msg hidden"></p>
+                            
+                            <button id="download-btn" class="btn-primary full-width disabled" disabled>
+                                <i class="fas fa-download"></i> Download Image
+                            </button>
+                        </form>
                     </div>
 
                     <div class="credits">
@@ -85,9 +109,28 @@
 
     </main>
 
+    <div id="submit-modal" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2>Submit Your Design</h2>
+            <div class="modal-body">
+                <p>Want to see your frame on eFrame.me?</p>
+                <div class="guidelines">
+                    <ul>
+                        <li><strong>Format:</strong> PNG (Transparent Background)</li>
+                        <li><strong>Size:</strong> 1080x1080 pixels (Recommended)</li>
+                        <li><strong>Layout:</strong> Ensure the center area is transparent for the user's photo.</li>
+                    </ul>
+                </div>
+                <p>Click the button below to email us. Please attach your PNG file.</p>
+                <a id="mailto-link" href="#" class="btn-primary full-width" style="margin-top: 15px; text-decoration: none;">Send Design via Email</a>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p>&copy; 2024 FrameGen. All rights reserved.</p>
-        <a href="#">Submit Your Design</a>
+        <p>&copy; 2024 eFrame.me. All rights reserved.</p>
+        <a href="#" id="footer-submit-link">Submit Your Design Free</a>
     </footer>
 
     <script src="script.js"></script>
