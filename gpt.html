@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Frame Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --white:#ffffff;
+  --black:#000000;
+  --red:#cc0000;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--white);
+  color: var(--black);
+}
+
+header, footer {
+  background: var(--black);
+  color: var(--white);
+  padding: 12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+header h1 {
+  margin:0;
+  font-size:18px;
+}
+
+a.action {
+  color: var(--red);
+  font-weight:bold;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+main {
+  padding:16px;
+}
+
+input, button {
+  padding:8px;
+  font-size:14px;
+}
+
+button {
+  background: var(--red);
+  color: var(--white);
+  border:none;
+  cursor:pointer;
+}
+
+button:disabled {
+  opacity:.4;
+  cursor:not-allowed;
+}
+
+.search-box {
+  width:100%;
+  max-width:400px;
+  margin-bottom:16px;
+}
+
+.frame-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+}
+
+.frame-card {
+  border:1px solid #ddd;
+  padding:8px;
+  cursor:pointer;
+  text-align:center;
+}
+
+.frame-card img {
+  max-width:100%;
+  height:auto;
+}
+
+.editor {
+  display:none;
+  margin-top:20px;
+}
+
+.canvas-wrapper {
+  position:relative;
+  max-width:320px;
+  margin:auto;
+}
+
+canvas {
+  width:100%;
+  background:#eee;
+}
+
+.controls {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin-top:12px;
+}
+
+.controls label {
+  font-size:12px;
+}
+
+.outputs {
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.output canvas {
+  width:120px;
+  height:120px;
+  background:#f0f0f0;
+}
+
+.form {
+  margin-top:16px;
+  text-align:center;
+}
+
+footer {
+  margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Frame Generator</h1>
+  <a class="action" id="submitDesignTop">Submit Your Design</a>
+</header>
+
+<main>
+
+<input class="search-box" id="search" placeholder="Search frame...">
+
+<div class="frame-grid" id="frameGrid"></div>
+
+<div class="editor" id="editor">
+
+  <h2 id="frameTitle" style="text-align:center;"></h2>
+
+  <div class="canvas-wrapper">
+    <canvas id="mainCanvas" width="400" height="400"></canvas>
+  </div>
+
+  <div class="controls">
+    <label>Rotate
+      <input type="range" id="rotate" min="0" max="360">
+    </label>
+    <label>Zoom
+      <input type="range" id="zoom" min="0.5" max="2" step="0.01" value="1">
+    </label>
+    <label>Grayscale
+      <input type="checkbox" id="gray">
+    </label>
+    <label>Sepia
+      <input type="checkbox" id="sepia">
+    </label>
+    <label>Upload Photo
+      <input type="file" id="upload" accept="image/*">
+    </label>
+  </div>
+
+  <div class="outputs">
+    <div class="output">
+      <canvas id="linkedin" width="400" height="400"></canvas>
+      <br><button id="dlLinkedin" disabled>LinkedIn</button>
+    </div>
+    <div class="output">
+      <canvas id="facebook" width="180" height="180"></canvas>
+      <br><button id="dlFacebook" disabled>Facebook</button>
+    </div>
+    <div class="output">
+      <canvas id="instagram" width="320" height="320"></canvas>
+      <br><button id="dlInstagram" disabled>Instagram</button>
+    </div>
+  </div>
+
+  <div class="form">
+    <input id="name" placeholder="Name">
+    <input id="email" placeholder="Email">
+  </div>
+
+</div>
+
+</main>
+
+<footer>
+  <span>© Frame Generator</span>
+  <a class="action" id="submitDesignBottom">Submit Your Design</a>
+</footer>
+
+<script>
+/* =======================
+   Dummy JSON Frame Data
+======================= */
+const frames = [
+  {
+    id:1,
+    name:"Tech Summit 2026",
+    details:"Official Campaign",
+    by:"Tech Org",
+    creator:{name:"Designer A", social:"https://twitter.com"},
+    frame:"https://via.placeholder.com/400x400.png?text=FRAME+1"
+  },
+  {
+    id:2,
+    name:"Women in STEM",
+    details:"Awareness Event",
+    by:"STEM Club",
+    creator:{name:"Designer B", social:"https://instagram.com"},
+    frame:"https://via.placeholder.com/400x400.png?text=FRAME+2"
+  }
+];
+
+/* =======================
+   State
+======================= */
+const grid = document.getElementById("frameGrid");
+const editor = document.getElementById("editor");
+const canvas = document.getElementById("mainCanvas");
+const ctx = canvas.getContext("2d");
+
+let frameImg = new Image();
+let userImg = new Image();
+let angle=0, scale=1, posX=0, posY=0;
+let dragging=false, startX, startY;
+let currentFrame=null;
+
+/* =======================
+   Render Frames
+======================= */
+function renderFrames(list){
+  grid.innerHTML="";
+  list.forEach(f=>{
+    const d=document.createElement("div");
+    d.className="frame-card";
+    d.innerHTML=`<img src="${f.frame}"><strong>${f.name}</strong>`;
+    d.onclick=()=>selectFrame(f);
+    grid.appendChild(d);
+  });
+}
+renderFrames(frames);
+
+/* =======================
+   Search
+======================= */
+document.getElementById("search").oninput=e=>{
+  const q=e.target.value.toLowerCase();
+  renderFrames(frames.filter(f=>f.name.toLowerCase().includes(q)));
+};
+
+/* =======================
+   Frame Select
+======================= */
+function selectFrame(f){
+  currentFrame=f;
+  document.getElementById("frameTitle").innerText=f.name;
+  frameImg.src=f.frame;
+  editor.style.display="block";
+  redraw();
+}
+
+/* =======================
+   Image Upload
+======================= */
+document.getElementById("upload").onchange=e=>{
+  const r=new FileReader();
+  r.onload=ev=>{
+    userImg.onload=redraw;
+    userImg.src=ev.target.result;
+  };
+  r.readAsDataURL(e.target.files[0]);
+};
+
+/* =======================
+   Controls
+======================= */
+document.getElementById("rotate").oninput=e=>{angle=e.target.value; redraw();}
+document.getElementById("zoom").oninput=e=>{scale=e.target.value; redraw();}
+document.getElementById("gray").onchange=redraw;
+document.getElementById("sepia").onchange=redraw;
+
+/* =======================
+   Drag
+======================= */
+canvas.onmousedown=e=>{
+  dragging=true;
+  startX=e.offsetX-posX;
+  startY=e.offsetY-posY;
+};
+canvas.onmouseup=()=>dragging=false;
+canvas.onmousemove=e=>{
+  if(!dragging) return;
+  posX=e.offsetX-startX;
+  posY=e.offsetY-startY;
+  redraw();
+};
+
+/* =======================
+   Draw
+======================= */
+function redraw(){
+  ctx.clearRect(0,0,400,400);
+  ctx.save();
+  ctx.translate(200+posX,200+posY);
+  ctx.rotate(angle*Math.PI/180);
+  ctx.scale(scale,scale);
+  let filter="";
+  if(gray.checked) filter+="grayscale(100%) ";
+  if(sepia.checked) filter+="sepia(100%) ";
+  ctx.filter=filter||"none";
+  ctx.drawImage(userImg,-200,-200,400,400);
+  ctx.restore();
+  ctx.filter="none";
+  ctx.drawImage(frameImg,0,0,400,400);
+  generateOutputs();
+}
+
+/* =======================
+   Outputs
+======================= */
+function generateOutputs(){
+  drawOut("linkedin",400,false);
+  drawOut("facebook",180,false);
+  drawOut("instagram",320,true);
+  checkUnlock();
+}
+
+function drawOut(id,size,circle){
+  const c=document.getElementById(id);
+  const x=c.getContext("2d");
+  x.clearRect(0,0,size,size);
+  if(circle){
+    x.beginPath();
+    x.arc(size/2,size/2,size/2,0,Math.PI*2);
+    x.clip();
+  }
+  x.drawImage(canvas,0,0,size,size);
+}
+
+/* =======================
+   Unlock Download
+======================= */
+function checkUnlock(){
+  const ok=name.value && email.value;
+  ["dlLinkedin","dlFacebook","dlInstagram"].forEach(id=>{
+    document.getElementById(id).disabled=!ok;
+  });
+}
+name.oninput=checkUnlock;
+email.oninput=checkUnlock;
+
+/* =======================
+   Download
+======================= */
+function download(id,name){
+  const a=document.createElement("a");
+  a.download=name;
+  a.href=document.getElementById(id).toDataURL();
+  a.click();
+}
+dlLinkedin.onclick=()=>download("linkedin","linkedin.png");
+dlFacebook.onclick=()=>download("facebook","facebook.png");
+dlInstagram.onclick=()=>download("instagram","instagram.png");
+
+/* =======================
+   Submit Design Email
+======================= */
+function submitEmail(){
+  const body=`
+Frame: ${currentFrame.name}
+Details: ${currentFrame.details}
+Event By: ${currentFrame.by}
+Creator: ${currentFrame.creator.name} (${currentFrame.creator.social})
+`;
+  location.href=`mailto:design@example.com?subject=Frame Submission&body=${encodeURIComponent(body)}`;
+}
+submitDesignTop.onclick=submitEmail;
+submitDesignBottom.onclick=submitEmail;
+</script>
+
+</body>
+</html>
