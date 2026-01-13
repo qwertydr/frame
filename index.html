@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Frame Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">FrameGen</div>
+        <nav>
+            <a href="#" class="btn-secondary">Submit Your Design</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        
+        <section id="gallery-view">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search events (e.g., 'Hackathon', 'Reunion')...">
+                <button id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="frames-grid" id="frames-grid">
+                </div>
+        </section>
+
+        <section id="editor-view" class="hidden">
+            <button id="back-btn" class="btn-text"><i class="fas fa-arrow-left"></i> Back to Gallery</button>
+            
+            <div class="editor-layout">
+                <div class="canvas-container">
+                    <canvas id="main-canvas"></canvas>
+                    <div class="loading-overlay hidden" id="loading-msg">Generating...</div>
+                </div>
+
+                <div class="controls-panel">
+                    <h2 id="selected-event-title">Event Name</h2>
+                    <p id="selected-event-meta" class="meta-text">By Organizer</p>
+
+                    <div class="control-group">
+                        <label for="upload-image" class="btn-primary full-width">
+                            <i class="fas fa-upload"></i> Upload Your Photo
+                        </label>
+                        <input type="file" id="upload-image" accept="image/*" hidden>
+                    </div>
+
+                    <div class="control-group disabled" id="adjustments-group">
+                        <label>Zoom</label>
+                        <input type="range" id="scale-slider" min="0.1" max="3" step="0.1" value="1">
+                        
+                        <label>Rotate</label>
+                        <input type="range" id="rotate-slider" min="-180" max="180" step="1" value="0">
+                        
+                        <p class="hint"><i class="fas fa-hand-pointer"></i> Drag image on canvas to move</p>
+                    </div>
+
+                    <hr>
+
+                    <div class="control-group">
+                        <h3>Finalize & Download</h3>
+                        <p class="hint">Select platform format (All outputs are high-quality square)</p>
+                        <div class="platform-selector">
+                            <button class="platform-btn active" data-platform="linkedin"><i class="fab fa-linkedin"></i></button>
+                            <button class="platform-btn" data-platform="facebook"><i class="fab fa-facebook"></i></button>
+                            <button class="platform-btn" data-platform="instagram"><i class="fab fa-instagram"></i></button>
+                        </div>
+
+                        <input type="text" id="user-name" placeholder="Full Name" required>
+                        <input type="email" id="user-email" placeholder="Email Address" required>
+                        
+                        <button id="download-btn" class="btn-primary full-width disabled" disabled>
+                            <i class="fas fa-download"></i> Download Image
+                        </button>
+                    </div>
+
+                    <div class="credits">
+                        <p>Graphics by: <a href="#" id="graphics-link" target="_blank">Name</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FrameGen. All rights reserved.</p>
+        <a href="#">Submit Your Design</a>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
