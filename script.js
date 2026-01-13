@@ -8,7 +8,7 @@ const framesData = [
         eventBy: "DevCommunity",
         graphicsBy: "John Doe",
         socialLink: "https://twitter.com",
-        framePath: "https://eframe.me/frames/frame.png" 
+        framePath: "https://qwertydr.github.io/frame/frame.png" 
     },
     {
         id: 2,
@@ -17,7 +17,7 @@ const framesData = [
         eventBy: "University Board",
         graphicsBy: "Jane Smith",
         socialLink: "https://linkedin.com",
-        framePath: "https://eframe.me/frames/frame.png"
+        framePath: "https://qwertydr.github.io/frame/frame.png"
     }
 ];
 
