@@ -321,7 +321,7 @@ function handleDownloadClick() {
     formData.append('name', name);
     formData.append('email', email);
 
-    fetch('https://eptonline.org/subscribe.php', {
+    fetch('https://m.eptonline.org/subs/subscribes.php', {
         method: 'POST',
         body: formData
     })
