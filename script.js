@@ -12,7 +12,7 @@ const framesData = [
     },
     {
         id: 2,
-        eventName: "Class of (Graduation)",
+        eventName: "Class of (Graduation) 1",
         details: "Class of (Graduation)",
         eventBy: "School Board",
         graphicsBy: "Jane Smith",
@@ -21,7 +21,7 @@ const framesData = [
     },
     {
         id: 3,
-        eventName: "Class of (Graduation)",
+        eventName: "Class of (Graduation) 2",
         details: "Class of (Graduation)",
         eventBy: "School Board",
         graphicsBy: "Jane Smith",
@@ -30,7 +30,7 @@ const framesData = [
     },
     {
         id: 4,
-        eventName: "Class of (Graduation)",
+        eventName: "Class of (Graduation) 3",
         details: "Class of (Graduation)",
         eventBy: "School Board",
         graphicsBy: "Jane Smith",
@@ -39,7 +39,7 @@ const framesData = [
     },
     {
         id: 5,
-        eventName: "Class of (Graduation)",
+        eventName: "Class of (Graduation) 4",
         details: "Class of (Graduation)",
         eventBy: "School Board",
         graphicsBy: "Jane Smith",
