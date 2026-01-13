@@ -15,7 +15,7 @@ const framesData = [
         graphicsBy: "John Doe",
         socialLink: "https://twitter.com",
         // Using a placeholder image for demonstration. Replace with your local paths.
-        framePath: "https://via.placeholder.com/1080x1080/ffffff/000000?text=Tech+Summit+Frame+PNG" 
+        framePath: "https://qwertydr.github.io/frame/frame.png" 
     },
     {
         id: 2,
@@ -24,7 +24,7 @@ const framesData = [
         eventBy: "University Board",
         graphicsBy: "Jane Smith",
         socialLink: "https://linkedin.com",
-        framePath: "https://via.placeholder.com/1080x1080/ff0000/ffffff?text=Reunion+Frame+PNG"
+        framePath: "https://qwertydr.github.io/frame/frame.png"
     },
     {
         id: 3,
@@ -33,7 +33,7 @@ const framesData = [
         eventBy: "NGO World",
         graphicsBy: "PixelArt",
         socialLink: "https://instagram.com",
-        framePath: "https://via.placeholder.com/1080x1080/000000/ffffff?text=Charity+Frame+PNG"
+        framePath: "https://qwertydr.github.io/frame/frame.png"
     }
 ];
 
