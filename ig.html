@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Comment PNG Generator</title>
+    <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js">
+    </script>
+    <style>
+        :root {
+            --sunset-1: #ff6b6b;
+            --sunset-2: #ff8e53;
+            --sunset-3: #ffd93d;
+            --sunset-4: #ff6b8a;
+            --ocean-1: #4facfe;
+            --ocean-2: #00f2fe;
+            --forest-1: #43e97b;
+            --forest-2: #38f9d7;
+            --lavender-1: #a18cd1;
+            --lavender-2: #fbc2eb;
+            --rose-1: #f093fb;
+            --rose-2: #f5576c;
+            --mono-1: #cfd9df;
+            --mono-2: #e2ebf0;
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --text-primary: #262626;
+            --text-secondary: #8e8e8e;
+            --ig-blue: #0095f6;
+            --ig-verified: #3897f0;
+            --border: #dbdbdb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            gap: 32px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            flex: 1 1 480px;
+            max-width: 600px;
+            min-width: 340px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .preview-label {
+            color: #ffffffcc;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 600;
+        }
+
+        .preview-wrapper {
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        #downloadable-preview {
+            width: 100%;
+            padding: 40px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s ease;
+            min-height: 280px;
+            position: relative;
+        }
+
+        /* Theme backgrounds for the downloadable area */
+        .theme-sunset #downloadable-preview {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8d6 30%, #ffecd2 60%, #fff0f3 100%);
+            background: linear-gradient(160deg, #ffecd2 0%, #fcb69f 25%, #ffecd2 50%, #ffc3a0 75%, #ffecd2 100%);
+            background: linear-gradient(145deg, #fff3e0 0%, #ffe0b2 20%, #fff8e1 45%, #ffccbc 70%, #fff3e0 100%);
+        }
+        .theme-ocean #downloadable-preview {
+            background: linear-gradient(145deg, #e0f7fa 0%, #e1f5fe 30%, #e8f5e9 60%, #e0f2f1 100%);
+            background: linear-gradient(150deg, #e0f7fa 0%, #b2ebf2 25%, #e0f7fa 50%, #b3e5fc 75%, #e0f7fa 100%);
+        }
+        .theme-forest #downloadable-preview {
+            background: linear-gradient(145deg, #e8f5e9 0%, #f1f8e9 30%, #e0f2f1 60%, #e8f5e9 100%);
+            background: linear-gradient(150deg, #e8f5e9 0%, #c8e6c9 25%, #e8f5e9 50%, #dcedc8 75%, #e8f5e9 100%);
+        }
+        .theme-lavender #downloadable-preview {
+            background: linear-gradient(145deg, #f3e5f5 0%, #fce4ec 30%, #ede7f6 60%, #f3e5f5 100%);
+            background: linear-gradient(150deg, #f3e5f5 0%, #e1bee7 25%, #f3e5f5 50%, #f8bbd0 75%, #f3e5f5 100%);
+        }
+        .theme-rose #downloadable-preview {
+            background: linear-gradient(145deg, #fce4ec 0%, #fff0f5 30%, #fce4ec 60%, #fff5f5 100%);
+            background: linear-gradient(150deg, #fce4ec 0%, #f8bbd0 25%, #fce4ec 50%, #ffcdd2 75%, #fce4ec 100%);
+        }
+        .theme-mono #downloadable-preview {
+            background: linear-gradient(145deg, #f5f5f5 0%, #eeeeee 30%, #fafafa 60%, #f5f5f5 100%);
+            background: linear-gradient(150deg, #f5f5f5 0%, #e0e0e0 25%, #f5f5f5 50%, #e8e8e8 75%, #f5f5f5 100%);
+        }
+        .theme-default #downloadable-preview {
+            background: linear-gradient(145deg, #fafafa 0%, #f5f5f5 40%, #fafafa 100%);
+        }
+
+        .comment-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.06);
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .comment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 20px 20px 0 0;
+            transition: background 0.5s ease;
+            opacity: 0.7;
+        }
+        .theme-sunset .comment-card::before {
+            background: linear-gradient(90deg, #ff6b6b, #ff8e53, #ffd93d);
+        }
+        .theme-ocean .comment-card::before {
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+        }
+        .theme-forest .comment-card::before {
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+        }
+        .theme-lavender .comment-card::before {
+            background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+        }
+        .theme-rose .comment-card::before {
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+        }
+        .theme-mono .comment-card::before {
+            background: linear-gradient(90deg, #b0b0b0, #d0d0d0);
+        }
+        .theme-default .comment-card::before {
+            background: linear-gradient(90deg, #dbdbdb, #c7c7c7);
+        }
+
+        .profile-pic-container {
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+        .profile-pic-container img,
+        .profile-pic-container canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .profile-pic-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #fff;
+            letter-spacing: 0.05em;
+            transition: background 0.3s ease;
+        }
+
+        .comment-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .username-display {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #262626;
+            letter-spacing: -0.01em;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #3897f0;
+            position: relative;
+            vertical-align: middle;
+        }
+        .verified-badge svg {
+            width: 10px;
+            height: 10px;
+            fill: #fff;
+        }
+        .verified-badge.hidden {
+            display: none;
+        }
+        .comment-text-display {
+            font-size: 0.95rem;
+            color: #262626;
+            line-height: 1.5;
+            word-break: break-word;
+            white-space: pre-wrap;
+            margin-bottom: 8px;
+        }
+        .comment-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: #8e8e8e;
+            flex-wrap: wrap;
+        }
+        .comment-time {
+            color: #8e8e8e;
+        }
+        .comment-like {
+            color: #8e8e8e;
+            cursor: default;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            user-select: none;
+        }
+        .comment-like .heart-icon {
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+        .theme-sunset .heart-icon {
+            color: #ff6b6b;
+        }
+        .theme-ocean .heart-icon {
+            color: #4facfe;
+        }
+        .theme-forest .heart-icon {
+            color: #43e97b;
+        }
+        .theme-lavender .heart-icon {
+            color: #a18cd1;
+        }
+        .theme-rose .heart-icon {
+            color: #f5576c;
+        }
+        .theme-mono .heart-icon {
+            color: #888;
+        }
+        .theme-default .heart-icon {
+            color: #8e8e8e;
+        }
+        .comment-reply {
+            color: #8e8e8e;
+            cursor: default;
+            font-weight: 500;
+            user-select: none;
+        }
+        .comment-likes-count {
+            font-weight: 600;
+            color: #262626;
+            font-size: 0.78rem;
+            margin-top: 2px;
+        }
+
+        /* Download button near preview */
+        .preview-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Controls Section */
+        .controls-section {
+            flex: 0 1 380px;
+            min-width: 300px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 28px 26px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .controls-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a1a2e;
+            text-align: center;
+            letter-spacing: -0.02em;
+            margin-bottom: 2px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .control-group label {
+            font-weight: 600;
+            font-size: 0.82rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .control-group input[type="text"],
+        .control-group textarea,
+        .control-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: #262626;
+            transition: all 0.25s ease;
+            background: #fafafa;
+            resize: vertical;
+        }
+        .control-group input[type="text"]:focus,
+        .control-group textarea:focus,
+        .control-group select:focus {
+            outline: none;
+            border-color: #ff8e53;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 142, 83, 0.1);
+        }
+        .control-group textarea {
+            min-height: 70px;
+            max-height: 120px;
+        }
+        .char-counter {
+            font-size: 0.7rem;
+            color: #999;
+            text-align: right;
+            margin-top: 2px;
+        }
+        .char-counter.warning {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        .control-group select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%23888'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+
+        .avatar-controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            letter-spacing: 0.01em;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: center;
+            white-space: nowrap;
+        }
+        .btn-outline {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            color: #555;
+        }
+        .btn-outline:hover {
+            border-color: #ff8e53;
+            color: #ff8e53;
+            background: #fff8f5;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(255, 107, 107, 0.35);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 22px rgba(255, 107, 107, 0.5);
+            transform: translateY(-1px);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 12px 24px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.02em;
+        }
+        .btn-download:hover {
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #1f1f3a, #1a2748);
+        }
+        .btn-download:active {
+            transform: scale(0.96);
+        }
+        .btn-reset {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            color: #777;
+        }
+        .btn-reset:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+            color: #555;
+        }
+        .btn-sm {
+            padding: 7px 14px;
+            font-size: 0.78rem;
+            border-radius: 8px;
+        }
+        .btn-upload {
+            background: #f9f9f9;
+            border: 2px dashed #ddd;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-upload:hover {
+            border-color: #ff8e53;
+            color: #ff8e53;
+            background: #fff8f5;
+        }
+        .btn-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .feedback-link {
+            text-align: center;
+            font-size: 0.78rem;
+            color: #aaa;
+            margin-top: 4px;
+        }
+        .feedback-link a {
+            color: #888;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .feedback-link a:hover {
+            color: #ff8e53;
+            text-decoration: underline;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a1a2e;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            z-index: 999;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast.success {
+            background: #2ecc71;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .app-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 24px;
+            }
+            .preview-section {
+                position: static;
+                flex: 1 1 auto;
+                max-width: 100%;
+                min-width: auto;
+                width: 100%;
+            }
+            .controls-section {
+                flex: 1 1 auto;
+                max-width: 500px;
+                width: 100%;
+                min-width: auto;
+            }
+            #downloadable-preview {
+                padding: 24px 16px;
+            }
+            .comment-card {
+                padding: 20px 18px;
+                border-radius: 16px;
+            }
+            .comment-card::before {
+                border-radius: 16px 16px 0 0;
+            }
+            .profile-pic-container {
+                width: 42px;
+                height: 42px;
+            }
+            .username-display {
+                font-size: 0.85rem;
+            }
+            .comment-text-display {
+                font-size: 0.85rem;
+            }
+        }
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+            .controls-section {
+                padding: 20px 16px;
+                border-radius: 16px;
+            }
+            #downloadable-preview {
+                padding: 16px 8px;
+            }
+            .comment-card {
+                padding: 14px 12px;
+                border-radius: 14px;
+                gap: 10px;
+            }
+            .comment-card::before {
+                border-radius: 14px 14px 0 0;
+            }
+            .profile-pic-container {
+                width: 36px;
+                height: 36px;
+            }
+            .btn {
+                padding: 8px 14px;
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+<body class="theme-sunset">
+
+    <div class="app-container">
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <span class="preview-label">📸 Preview</span>
+            <div class="preview-wrapper" id="preview-wrapper">
+                <div id="downloadable-preview">
+                    <div class="comment-card" id="comment-card">
+                        <div class="profile-pic-container" id="profile-pic-container">
+                            <div class="profile-pic-placeholder" id="profile-pic-placeholder"
+                            style="background: #ff8e53;">A</div>
+                        </div>
+                        <div class="comment-body">
+                            <div class="comment-header">
+                                <span class="username-display" id="username-display">adminad</span>
+                                <span class="verified-badge" id="verified-badge" title="Verified">
+                                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>
+                                </span>
+                            </div>
+                            <div class="comment-text-display" id="comment-text-display">Hi Hello Bye Bye</div>
+                            <div class="comment-meta">
+                                <span class="comment-time" id="comment-time">2h ago</span>
+                                <span class="comment-like">
+                                    <span class="heart-icon">♥</span>
+                                    <span id="like-label">Like</span>
+                                </span>
+                                <span class="comment-reply" id="reply-label">Reply</span>
+                            </div>
+                            <div class="comment-likes-count" id="likes-count">12 likes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="preview-actions">
+                <button class="btn btn-download" id="btn-download" title="Download as high-resolution PNG">
+                    ⬇ Download PNG
+                </button>
+                <button class="btn btn-reset" id="btn-reset" title="Reset to defaults">
+                    ↺ Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div class="controls-section">
+            <div class="controls-title">⚙️ Customize Comment</div>
+
+            <!-- Username -->
+            <div class="control-group">
+                <label for="username-input">Username</label>
+                <input type="text" id="username-input" value="adminad" maxlength="30" placeholder="Enter username...">
+                <span class="char-counter" id="username-counter">7 / 30 characters</span>
+            </div>
+
+            <!-- Comment -->
+            <div class="control-group">
+                <label for="comment-input">Comment</label>
+                <textarea id="comment-input" placeholder="Write your comment..." maxlength="500">Hi Hello Bye Bye</textarea>
+                <span class="char-counter" id="comment-counter">15 / 500 characters</span>
+            </div>
+
+            <!-- Badge -->
+            <div class="control-group">
+                <label for="badge-select">Badge</label>
+                <select id="badge-select">
+                    <option value="verified" selected>Verified</option>
+                    <option value="none">None</option>
+                    <option value="creator">Creator</option>
+                </select>
+            </div>
+
+            <!-- Color Theme -->
+            <div class="control-group">
+                <label for="color-select">Color</label>
+                <select id="color-select">
+                    <option value="sunset" selected>Sunset</option>
+                    <option value="ocean">Ocean</option>
+                    <option value="forest">Forest</option>
+                    <option value="lavender">Lavender</option>
+                    <option value="rose">Rose</option>
+                    <option value="mono">Mono</option>
+                    <option value="default">Default</option>
+                </select>
+            </div>
+
+            <!-- Language -->
+            <div class="control-group">
+                <label for="language-select">Language</label>
+                <select id="language-select">
+                    <option value="en" selected>English</option>
+                    <option value="es">Español</option>
+                    <option value="fr">Français</option>
+                    <option value="pt">Português</option>
+                    <option value="de">Deutsch</option>
+                    <option value="it">Italiano</option>
+                </select>
+            </div>
+
+            <!-- Profile Picture -->
+            <div class="control-group">
+                <label>Profile Picture</label>
+                <div class="avatar-controls">
+                    <button class="btn btn-outline btn-sm btn-upload" id="btn-upload-wrapper">
+                        📁 Upload
+                        <input type="file" id="file-upload" accept="image/*">
+                    </button>
+                    <button class="btn btn-outline btn-sm" id="btn-randomize">🎲 Randomize</button>
+                    <button class="btn btn-outline btn-sm" id="btn-remove-pic">✕ Remove</button>
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="feedback-link">
+                <a href="#feedback" id="feedback-link">💬 Feedback</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Hidden canvas for avatar generation (used by randomize) -->
+    <canvas id="avatar-canvas" width="200" height="200" style="display:none;"></canvas>
+
+    <script>
+        (function() {
+            // DOM Elements
+            const downloadablePreview = document.getElementById('downloadable-preview');
+            const previewWrapper = document.getElementById('preview-wrapper');
+            const commentCard = document.getElementById('comment-card');
+            const usernameDisplay = document.getElementById('username-display');
+            const verifiedBadge = document.getElementById('verified-badge');
+            const commentTextDisplay = document.getElementById('comment-text-display');
+            const commentTime = document.getElementById('comment-time');
+            const likeLabel = document.getElementById('like-label');
+            const replyLabel = document.getElementById('reply-label');
+            const likesCount = document.getElementById('likes-count');
+            const profilePicContainer = document.getElementById('profile-pic-container');
+            const profilePicPlaceholder = document.getElementById('profile-pic-placeholder');
+            const avatarCanvas = document.getElementById('avatar-canvas');
+            const toast = document.getElementById('toast');
+
+            // Input elements
+            const usernameInput = document.getElementById('username-input');
+            const commentInput = document.getElementById('comment-input');
+            const badgeSelect = document.getElementById('badge-select');
+            const colorSelect = document.getElementById('color-select');
+            const languageSelect = document.getElementById('language-select');
+            const fileUpload = document.getElementById('file-upload');
+            const btnRandomize = document.getElementById('btn-randomize');
+            const btnRemovePic = document.getElementById('btn-remove-pic');
+            const btnDownload = document.getElementById('btn-download');
+            const btnReset = document.getElementById('btn-reset');
+            const usernameCounter = document.getElementById('username-counter');
+            const commentCounter = document.getElementById('comment-counter');
+            const feedbackLink = document.getElementById('feedback-link');
+
+            // State
+            let currentUploadedImageDataUrl = null;
+            let currentAvatarColor = '#ff8e53';
+            let likesNumber = 12;
+
+            // Random avatar colors pool
+            const avatarColors = [
+                '#ff6b6b', '#ff8e53', '#ffd93d', '#6bcb77', '#4d96ff',
+                '#9b59b6', '#e74c3c', '#1abc9c', '#3498db', '#e67e22',
+                '#2ecc71', '#f39c12', '#8e44ad', '#16a085', '#c0392b',
+                '#27ae60', '#2980b9', '#d35400', '#7f8c8d', '#f5576c',
+                '#a18cd1', '#43e97b', '#4facfe', '#f093fb', '#00bcd4'
+            ];
+
+            // Language translations for preview labels
+            const translations = {
+                en: { like: 'Like', reply: 'Reply', likes: 'likes', timeAgo: '2h ago', feedback: '💬 Feedback' },
+                es: { like: 'Me gusta', reply: 'Responder', likes: 'Me gusta', timeAgo: 'hace 2h',
+                    feedback: '💬 Comentarios' },
+                fr: { like: "J'aime", reply: 'Répondre', likes: "J'aime", timeAgo: 'il y a 2h',
+                    feedback: '💬 Retour' },
+                pt: { like: 'Curtir', reply: 'Responder', likes: 'curtidas', timeAgo: 'há 2h',
+                feedback: '💬 Feedback' },
+                de: { like: 'Gefällt mir', reply: 'Antworten', likes: 'Gefällt mir', timeAgo: 'vor 2 Std.',
+                    feedback: '💬 Rückmeldung' },
+                it: { like: 'Mi piace', reply: 'Rispondi', likes: 'Mi piace', timeAgo: '2h fa',
+                    feedback: '💬 Feedback' },
+            };
+
+            // Apply language
+            function applyLanguage(langCode) {
+                const t = translations[langCode] || translations['en'];
+                likeLabel.textContent = t.like;
+                replyLabel.textContent = t.reply;
+                likesCount.textContent = `${likesNumber} ${t.likes}`;
+                commentTime.textContent = t.timeAgo;
+                if (feedbackLink) {
+                    feedbackLink.textContent = t.feedback;
+                }
+            }
+
+            // Update preview
+            function updatePreview() {
+                const username = usernameInput.value.trim() || 'username';
+                const comment = commentInput.value.trim() || 'Write a comment...';
+                const badge = badgeSelect.value;
+                const colorTheme = colorSelect.value;
+                const langCode = languageSelect.value;
+
+                // Update display
+                usernameDisplay.textContent = username;
+                commentTextDisplay.textContent = comment;
+
+                // Badge
+                if (badge === 'verified') {
+                    verifiedBadge.classList.remove('hidden');
+                    verifiedBadge.title = 'Verified';
+                    verifiedBadge.querySelector('svg').setAttribute('viewBox', '0 0 24 24');
+                    verifiedBadge.querySelector('svg').innerHTML =
+                        '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/>';
+                } else if (badge === 'creator') {
+                    verifiedBadge.classList.remove('hidden');
+                    verifiedBadge.title = 'Creator';
+                    verifiedBadge.style.background = '#e91e63';
+                    verifiedBadge.querySelector('svg').innerHTML =
+                        '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/>';
+                } else {
+                    verifiedBadge.classList.add('hidden');
+                    verifiedBadge.style.background = '#3897f0';
+                }
+
+                // Reset badge background when switching back to verified
+                if (badge === 'verified') {
+                    verifiedBadge.style.background = '#3897f0';
+                }
+
+                // Color theme
+                document.body.className = 'theme-' + colorTheme;
+
+                // Language
+                applyLanguage(langCode);
+
+                // Update avatar initial if no uploaded image
+                if (!currentUploadedImageDataUrl) {
+                    updateAvatarInitial();
+                }
+
+                // Randomize likes count a bit for fun (keeps it realistic)
+                if (likesNumber === 12) {
+                    likesNumber = Math.floor(Math.random() * 30) + 3;
+                }
+                const t = translations[langCode] || translations['en'];
+                likesCount.textContent = `${likesNumber} ${t.likes}`;
+            }
+
+            // Update avatar initial letter based on username
+            function updateAvatarInitial() {
+                if (currentUploadedImageDataUrl) return; // Don't change if custom image
+                const username = usernameInput.value.trim() || 'u';
+                const initial = username.charAt(0).toUpperCase();
+                const placeholder = profilePicPlaceholder;
+                if (placeholder) {
+                    placeholder.textContent = initial;
+                    placeholder.style.background = currentAvatarColor;
+                }
+                // Ensure any previous img is removed
+                const existingImg = profilePicContainer.querySelector('img');
+                if (existingImg) existingImg.remove();
+                const existingCanvas = profilePicContainer.querySelector('canvas:not(#avatar-canvas)');
+                if (existingCanvas) existingCanvas.remove();
+                if (placeholder) placeholder.style.display = 'flex';
+                profilePicContainer.style.border = '2px solid #f0f0f0';
+            }
+
+            // Generate random avatar
+            function randomizeAvatar() {
+                const randomColor = avatarColors[Math.floor(Math.random() * avatarColors.length)];
+                currentAvatarColor = randomColor;
+                currentUploadedImageDataUrl = null;
+
+                // Remove any uploaded image
+                const existingImg = profilePicContainer.querySelector('img');
+                if (existingImg) existingImg.remove();
+                const existingCanvas = profilePicContainer.querySelector('canvas:not(#avatar-canvas)');
+                if (existingCanvas) existingCanvas.remove();
+
+                // Show placeholder with new color
+                const placeholder = profilePicPlaceholder;
+                if (placeholder) {
+                    placeholder.style.display = 'flex';
+                    placeholder.style.background = randomColor;
+                    const username = usernameInput.value.trim() || 'u';
+                    placeholder.textContent = username.charAt(0).toUpperCase();
+                }
+                profilePicContainer.style.border = '2px solid #f0f0f0';
+
+                // Draw a nicer avatar on hidden canvas for potential future use
+                const ctx = avatarCanvas.getContext('2d');
+                const size = 200;
+                avatarCanvas.width = size;
+                avatarCanvas.height = size;
+                ctx.clearRect(0, 0, size, size);
+
+                // Gradient circle
+                const gradient = ctx.createRadialGradient(size * 0.35, size * 0.35, size * 0.05, size * 0.5, size * 0.5,
+                    size * 0.55);
+                gradient.addColorStop(0, lightenColor(randomColor, 30));
+                gradient.addColorStop(1, randomColor);
+                ctx.beginPath();
+                ctx.arc(size / 2, size / 2, size / 2 - 4, 0, Math.PI * 2);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+
+                // Initial letter
+                const username = usernameInput.value.trim() || 'u';
+                const initial = username.charAt(0).toUpperCase();
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 80px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(initial, size / 2, size / 2);
+
+                showToast('🎨 Avatar randomized!');
+            }
+
+            function lightenColor(hex, percent) {
+                const num = parseInt(hex.replace('#', ''), 16);
+                const r = Math.min(255, (num >> 16) + percent);
+                const g = Math.min(255, ((num >> 8) & 0x00FF00) + percent);
+                const b = Math.min(255, (num & 0x0000FF) + percent);
+                return `rgb(${r},${g},${b})`;
+            }
+
+            // Handle file upload
+            function handleFileUpload(file) {
+                if (!file || !file.type.startsWith('image/')) {
+                    showToast('⚠️ Please upload an image file.');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUploadedImageDataUrl = e.target.result;
+                    // Remove placeholder and existing elements
+                    const placeholder = profilePicPlaceholder;
+                    if (placeholder) placeholder.style.display = 'none';
+                    const existingImg = profilePicContainer.querySelector('img');
+                    if (existingImg) existingImg.remove();
+                    const existingCanvas = profilePicContainer.querySelector('canvas:not(#avatar-canvas)');
+                    if (existingCanvas) existingCanvas.remove();
+
+                    // Create and insert image
+                    const img = document.createElement('img');
+                    img.src = currentUploadedImageDataUrl;
+                    img.alt = 'Profile picture';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.display = 'block';
+                    img.style.borderRadius = '50%';
+                    profilePicContainer.appendChild(img);
+                    profilePicContainer.style.border = '2px solid #e0e0e0';
+                    showToast('✅ Profile picture uploaded!');
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Remove profile picture
+            function removeProfilePic() {
+                currentUploadedImageDataUrl = null;
+                const existingImg = profilePicContainer.querySelector('img');
+                if (existingImg) existingImg.remove();
+                const existingCanvas = profilePicContainer.querySelector('canvas:not(#avatar-canvas)');
+                if (existingCanvas) existingCanvas.remove();
+                const placeholder = profilePicPlaceholder;
+                if (placeholder) {
+                    placeholder.style.display = 'flex';
+                    placeholder.style.background = currentAvatarColor;
+                    const username = usernameInput.value.trim() || 'u';
+                    placeholder.textContent = username.charAt(0).toUpperCase();
+                }
+                profilePicContainer.style.border = '2px solid #f0f0f0';
+                showToast('🗑️ Profile picture removed.');
+            }
+
+            // Toast notification
+            let toastTimeout;
+
+            function showToast(message, duration = 2200) {
+                clearTimeout(toastTimeout);
+                toast.textContent = message;
+                toast.className = 'toast';
+                if (message.includes('✅') || message.includes('Downloaded') || message.includes('success')) {
+                    toast.classList.add('success');
+                }
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, duration);
+            }
+
+            // Download as high-res PNG
+            async function downloadPNG() {
+                const btnDownloadEl = btnDownload;
+                const originalText = btnDownloadEl.textContent;
+                btnDownloadEl.textContent = '⏳ Generating...';
+                btnDownloadEl.disabled = true;
+                btnDownloadEl.style.opacity = '0.7';
+                btnDownloadEl.style.cursor = 'wait';
+
+                // Small delay to let UI update
+                await new Promise(resolve => setTimeout(resolve, 150));
+
+                try {
+                    const targetElement = document.getElementById('downloadable-preview');
+                    const canvas = await html2canvas(targetElement, {
+                        scale: 3, // High resolution: 3x the displayed size
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: null,
+                        logging: false,
+                        imageTimeout: 0,
+                        removeContainer: true,
+                    });
+
+                    // Convert to blob and trigger download
+                    const username = usernameInput.value.trim() || 'instagram-user';
+                    const sanitizedUsername = username.replace(/[^a-zA-Z0-9_]/g, '_').substring(0, 20);
+                    const filename = `instagram-comment-${sanitizedUsername}.png`;
+
+                    canvas.toBlob(function(blob) {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+
+                        const width = Math.round(canvas.width);
+                        const height = Math.round(canvas.height);
+                        showToast(`✅ Downloaded! (${width}×${height}px PNG)`);
+                    }, 'image/png', 1.0);
+
+                } catch (error) {
+                    console.error('html2canvas error:', error);
+                    showToast('❌ Failed to generate image. Please try again.');
+                } finally {
+                    btnDownloadEl.textContent = originalText;
+                    btnDownloadEl.disabled = false;
+                    btnDownloadEl.style.opacity = '1';
+                    btnDownloadEl.style.cursor = 'pointer';
+                }
+            }
+
+            // Reset all to defaults
+            function resetAll() {
+                usernameInput.value = 'adminad';
+                commentInput.value = 'Hi Hello Bye Bye';
+                badgeSelect.value = 'verified';
+                colorSelect.value = 'sunset';
+                languageSelect.value = 'en';
+                currentUploadedImageDataUrl = null;
+                currentAvatarColor = '#ff8e53';
+                likesNumber = 12;
+                verifiedBadge.style.background = '#3897f0';
+
+                // Remove uploaded image
+                const existingImg = profilePicContainer.querySelector('img');
+                if (existingImg) existingImg.remove();
+                const existingCanvas = profilePicContainer.querySelector('canvas:not(#avatar-canvas)');
+                if (existingCanvas) existingCanvas.remove();
+
+                // Reset placeholder
+                const placeholder = profilePicPlaceholder;
+                if (placeholder) {
+                    placeholder.style.display = 'flex';
+                    placeholder.style.background = '#ff8e53';
+                    placeholder.textContent = 'A';
+                }
+                profilePicContainer.style.border = '2px solid #f0f0f0';
+
+                // Reset file input
+                fileUpload.value = '';
+
+                // Update all
+                updatePreview();
+                updateCharCounters();
+                document.body.className = 'theme-sunset';
+                applyLanguage('en');
+                showToast('↺ Reset to defaults!');
+            }
+
+            // Update character counters
+            function updateCharCounters() {
+                const usernameLen = usernameInput.value.length;
+                const commentLen = commentInput.value.length;
+                const usernameMax = 30;
+                const commentMax = 500;
+
+                usernameCounter.textContent = `${usernameLen} / ${usernameMax} characters`;
+                commentCounter.textContent = `${commentLen} / ${commentMax} characters`;
+
+                if (usernameLen >= usernameMax) {
+                    usernameCounter.classList.add('warning');
+                } else {
+                    usernameCounter.classList.remove('warning');
+                }
+                if (commentLen >= commentMax) {
+                    commentCounter.classList.add('warning');
+                } else {
+                    commentCounter.classList.remove('warning');
+                }
+            }
+
+            // Event Listeners
+            usernameInput.addEventListener('input', () => {
+                updateCharCounters();
+                updatePreview();
+                if (!currentUploadedImageDataUrl) updateAvatarInitial();
+            });
+
+            commentInput.addEventListener('input', () => {
+                updateCharCounters();
+                updatePreview();
+            });
+
+            badgeSelect.addEventListener('change', updatePreview);
+            colorSelect.addEventListener('change', updatePreview);
+            languageSelect.addEventListener('change', updatePreview);
+
+            fileUpload.addEventListener('change', (e) => {
+                if (e.target.files && e.target.files[0]) {
+                    handleFileUpload(e.target.files[0]);
+                }
+            });
+
+            btnRandomize.addEventListener('click', () => {
+                randomizeAvatar();
+                updatePreview();
+            });
+
+            btnRemovePic.addEventListener('click', removeProfilePic);
+
+            btnDownload.addEventListener('click', downloadPNG);
+
+            btnReset.addEventListener('click', resetAll);
+
+            feedbackLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showToast('💬 Thanks for your feedback! (Demo)');
+            });
+
+            // Drag and drop support for profile picture
+            profilePicContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                profilePicContainer.style.border = '2px dashed #ff8e53';
+                profilePicContainer.style.transform = 'scale(1.05)';
+            });
+            profilePicContainer.addEventListener('dragleave', () => {
+                profilePicContainer.style.border = '2px solid #f0f0f0';
+                profilePicContainer.style.transform = 'scale(1)';
+            });
+            profilePicContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                profilePicContainer.style.border = '2px solid #f0f0f0';
+                profilePicContainer.style.transform = 'scale(1)';
+                if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                    handleFileUpload(e.dataTransfer.files[0]);
+                }
+            });
+
+            // Click on profile pic to trigger upload
+            profilePicContainer.addEventListener('click', (e) => {
+                if (e.target === profilePicContainer || e.target === profilePicPlaceholder ||
+                    profilePicPlaceholder.contains(e.target)) {
+                    fileUpload.click();
+                }
+            });
+            profilePicContainer.style.cursor = 'pointer';
+            profilePicContainer.title = 'Click to upload, or drag & drop an image';
+
+            // Keyboard shortcut for download
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                    e.preventDefault();
+                    downloadPNG();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                    e.preventDefault();
+                    randomizeAvatar();
+                    updatePreview();
+                }
+            });
+
+            // Initialize
+            function init() {
+                updateCharCounters();
+                updatePreview();
+                document.body.className = 'theme-sunset';
+                applyLanguage('en');
+                // Set initial avatar
+                const placeholder = profilePicPlaceholder;
+                if (placeholder) {
+                    placeholder.style.display = 'flex';
+                    placeholder.style.background = '#ff8e53';
+                    placeholder.textContent = 'A';
+                }
+            }
+
+            init();
+
+            console.log('✅ Instagram Comment PNG Generator ready!');
+            console.log('💡 Tips:');
+            console.log('  - Click the profile picture to upload an image');
+            console.log('  - Drag & drop an image onto the profile picture');
+            console.log('  - Press Ctrl+S (or Cmd+S) to download');
+            console.log('  - Press Ctrl+R (or Cmd+R) to randomize avatar');
+            console.log('  - Download resolution is 3× the preview size for high quality');
+        })();
+    </script>
+</body>
+</html>
