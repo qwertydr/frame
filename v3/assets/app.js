@@ -514,22 +514,38 @@ async function boot(){
   These are deterrents only. They cannot stop a technically capable
   browser user from opening DevTools through browser menus.
 */
-document.addEventListener("contextmenu",e=>e.preventDefault());
-document.addEventListener("dragstart",e=>e.preventDefault());
-document.addEventListener("selectstart",e=>{
-  if(e.target.closest(".player")) e.preventDefault();
-});
-document.addEventListener("keydown",e=>{
-  const k=e.key.toUpperCase();
-  if(
-    e.key==="F12" ||
-    (e.ctrlKey&&e.shiftKey&&["I","J","C"].includes(k)) ||
-    (e.ctrlKey&&k==="U")
-  ){
+document.addEventListener("contextmenu", e => {
+  e.preventDefault();
+}, true);
+
+document.addEventListener("dragstart", e => {
+  e.preventDefault();
+}, true);
+
+document.addEventListener("selectstart", e => {
+  const target = e.target;
+
+  if (
+    target instanceof Element &&
+    target.closest(".player")
+  ) {
+    e.preventDefault();
+  }
+}, true);
+
+document.addEventListener("keydown", e => {
+  const key = String(e.key || "").toUpperCase();
+
+  const blocked =
+    e.key === "F12" ||
+    (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(key)) ||
+    (e.ctrlKey && key === "U");
+
+  if (blocked) {
     e.preventDefault();
     e.stopPropagation();
   }
-});
+}, true);
 
 window.addEventListener("hashchange",boot);
 setInterval(updateCountdowns,1000);
