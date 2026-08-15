@@ -1,0 +1,23 @@
+[
+  {
+    "email": "student@example.com",
+    "password": "DemoPass123!",
+    "name": "Demo Student",
+    "institution": "Demo High School",
+    "language": "en"
+  },
+  {
+    "email": "student.bn@example.com",
+    "password": "DemoPass123!",
+    "name": "Demo Bangla Student",
+    "institution": "Demo Institution",
+    "language": "bn"
+  },
+  {
+    "email": "student.hi@example.com",
+    "password": "DemoPass123!",
+    "name": "Demo Hindi Student",
+    "institution": "Demo Institution",
+    "language": "hi"
+  }
+]

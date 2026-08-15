@@ -1,0 +1,18 @@
+[
+  {
+    "id": "proposal",
+    "title": "Proposal Submission Deadline",
+    "date": "2026-09-30T23:59:00-05:00",
+    "description": "The Research Proposal is the main research participants submit during the competition. The research proposal must be a maximum of 2 pages (excluding cover page, title, citations, and references). Information on how to write a proposal and what to include will be provided in the bootcamps as well as further communication.",
+    "submitLabel": "View proposal guidelines and requirements",
+    "submitUrl": "https://example.com/proposal-guidelines"
+  },
+  {
+    "id": "pitch",
+    "title": "Video Pitch Submission Deadline",
+    "date": "2026-10-15T23:59:00-05:00",
+    "description": "The top 100 Finalists must submit a 2.5-5 minute-long video submission. The Video Pitch is a presentation with slides which should state the proposal's research question or objective and provide an overall introduction to the participant's research process and potential future research avenues. Technical specifications and submission instructions will be provided to finalists.",
+    "submitLabel": "View video pitch guidelines",
+    "submitUrl": "https://example.com/video-pitch-guidelines"
+  }
+]
