@@ -1,0 +1,278 @@
+[
+  {
+    "id": 1,
+    "language": "en",
+    "languageName": "English",
+    "title": "Your First Step Into Academic Research",
+    "description": "This foundational lesson introduces you to the world of academic research, covering the basic concepts and expectations for competition participants.",
+    "topics": [
+      "Understanding academic research standards",
+      "Selecting a research topic",
+      "Developing research questions",
+      "Ethical considerations in research",
+      "Introduction to literature review"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 1,
+        "title": "Your First Step Into Academic Research",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "language": "en",
+    "languageName": "English",
+    "title": "Research Methodology",
+    "description": "Learn about different research methodologies and how to select the most appropriate approach for your project.",
+    "topics": [
+      "Quantitative vs. qualitative research",
+      "Experimental design",
+      "Data collection methods",
+      "Sampling techniques",
+      "Ensuring validity and reliability"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 2,
+        "title": "Research Methodology",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "language": "en",
+    "languageName": "English",
+    "title": "Research Proposal",
+    "description": "Master the art of writing a compelling research proposal that clearly communicates your project's value and methodology.",
+    "topics": [
+      "Structure of a research proposal",
+      "Writing clear objectives",
+      "Literature review techniques",
+      "Methodology section",
+      "Expected outcomes and impact"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 3,
+        "title": "Research Proposal",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "language": "en",
+    "languageName": "English",
+    "title": "Practice Research Proposal",
+    "description": "Apply what you've learned by analyzing real research proposal examples and getting practical tips for your own submission.",
+    "topics": [
+      "Analyzing successful proposals",
+      "Common mistakes to avoid",
+      "Formatting and submission guidelines",
+      "Peer review process",
+      "Final checklist before submission"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 4,
+        "title": "Practice Research Proposal",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "language": "bn",
+    "languageName": "বাংলা",
+    "title": "একাডেমিক গবেষণায় আপনার প্রথম পদক্ষেপ",
+    "description": "এই ভিত্তিমূলক পাঠে একাডেমিক গবেষণার মৌলিক ধারণা ও প্রতিযোগিতায় অংশগ্রহণকারীদের প্রত্যাশা সম্পর্কে শেখানো হবে।",
+    "topics": [
+      "একাডেমিক গবেষণার মানদণ্ড বোঝা",
+      "গবেষণার বিষয় নির্বাচন",
+      "গবেষণা প্রশ্ন তৈরি",
+      "গবেষণায় নৈতিকতা",
+      "সাহিত্য পর্যালোচনার পরিচিতি"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 1,
+        "title": "একাডেমিক গবেষণায় আপনার প্রথম পদক্ষেপ",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "language": "bn",
+    "languageName": "বাংলা",
+    "title": "গবেষণা পদ্ধতি",
+    "description": "বিভিন্ন গবেষণা পদ্ধতি এবং আপনার প্রকল্পের জন্য উপযুক্ত পদ্ধতি নির্বাচন সম্পর্কে জানুন।",
+    "topics": [
+      "পরিমাণগত বনাম গুণগত গবেষণা",
+      "পরীক্ষামূলক নকশা",
+      "তথ্য সংগ্রহ পদ্ধতি",
+      "নমুনা নির্বাচন কৌশল",
+      "বৈধতা ও নির্ভরযোগ্যতা নিশ্চিত করা"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 2,
+        "title": "গবেষণা পদ্ধতি",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "language": "bn",
+    "languageName": "বাংলা",
+    "title": "গবেষণা প্রস্তাবনা",
+    "description": "আপনার গবেষণার মূল্য ও পদ্ধতিকে স্পষ্টভাবে উপস্থাপন করে একটি শক্তিশালী গবেষণা প্রস্তাবনা লেখার কৌশল শিখুন।",
+    "topics": [
+      "গবেষণা প্রস্তাবনার কাঠামো",
+      "স্পষ্ট উদ্দেশ্য লেখা",
+      "সাহিত্য পর্যালোচনা কৌশল",
+      "পদ্ধতি অংশ",
+      "প্রত্যাশিত ফলাফল ও প্রভাব"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 3,
+        "title": "গবেষণা প্রস্তাবনা",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "language": "bn",
+    "languageName": "বাংলা",
+    "title": "গবেষণা প্রস্তাবনার অনুশীলন",
+    "description": "বাস্তব গবেষণা প্রস্তাবনার উদাহরণ বিশ্লেষণ করে আপনার নিজের প্রস্তাবনার জন্য ব্যবহারিক নির্দেশনা নিন।",
+    "topics": [
+      "সফল প্রস্তাবনা বিশ্লেষণ",
+      "সাধারণ ভুল এড়ানো",
+      "ফরম্যাটিং ও জমাদান নির্দেশনা",
+      "পিয়ার রিভিউ প্রক্রিয়া",
+      "জমাদানের আগে চূড়ান্ত চেকলিস্ট"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 4,
+        "title": "গবেষণা প্রস্তাবনার অনুশীলন",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "language": "hi",
+    "languageName": "हिन्दी",
+    "title": "शैक्षणिक अनुसंधान में आपका पहला कदम",
+    "description": "यह आधारभूत पाठ शैक्षणिक अनुसंधान की मूल अवधारणाओं और प्रतियोगिता प्रतिभागियों की अपेक्षाओं से परिचित कराता है।",
+    "topics": [
+      "शैक्षणिक अनुसंधान मानकों को समझना",
+      "अनुसंधान विषय चुनना",
+      "अनुसंधान प्रश्न विकसित करना",
+      "अनुसंधान में नैतिक विचार",
+      "साहित्य समीक्षा का परिचय"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 1,
+        "title": "शैक्षणिक अनुसंधान में आपका पहला कदम",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "language": "hi",
+    "languageName": "हिन्दी",
+    "title": "अनुसंधान पद्धति",
+    "description": "विभिन्न अनुसंधान पद्धतियों और अपने प्रोजेक्ट के लिए उपयुक्त पद्धति चुनने का तरीका सीखें।",
+    "topics": [
+      "मात्रात्मक बनाम गुणात्मक अनुसंधान",
+      "प्रायोगिक डिजाइन",
+      "डेटा संग्रह विधियाँ",
+      "सैंपलिंग तकनीक",
+      "वैधता और विश्वसनीयता सुनिश्चित करना"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 2,
+        "title": "अनुसंधान पद्धति",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "language": "hi",
+    "languageName": "हिन्दी",
+    "title": "अनुसंधान प्रस्ताव",
+    "description": "अपने अनुसंधान के मूल्य और पद्धति को स्पष्ट रूप से प्रस्तुत करने वाला प्रभावी अनुसंधान प्रस्ताव लिखना सीखें।",
+    "topics": [
+      "अनुसंधान प्रस्ताव की संरचना",
+      "स्पष्ट उद्देश्य लिखना",
+      "साहित्य समीक्षा तकनीक",
+      "कार्यप्रणाली अनुभाग",
+      "अपेक्षित परिणाम और प्रभाव"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 3,
+        "title": "अनुसंधान प्रस्ताव",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "language": "hi",
+    "languageName": "हिन्दी",
+    "title": "अभ्यास अनुसंधान प्रस्ताव",
+    "description": "वास्तविक अनुसंधान प्रस्तावों के उदाहरणों का विश्लेषण करके अपने प्रस्ताव के लिए व्यावहारिक सुझाव प्राप्त करें।",
+    "topics": [
+      "सफल प्रस्तावों का विश्लेषण",
+      "सामान्य गलतियों से बचना",
+      "फॉर्मेटिंग और सबमिशन दिशानिर्देश",
+      "पीयर रिव्यू प्रक्रिया",
+      "अंतिम चेकलिस्ट"
+    ],
+    "videoId": "76979871",
+    "lectures": [
+      {
+        "id": 4,
+        "title": "अभ्यास अनुसंधान प्रस्ताव",
+        "videoId": "76979871",
+        "resource": ""
+      }
+    ]
+  }
+]
