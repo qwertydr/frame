@@ -5,12 +5,12 @@
     {
       "name": "SaveMyExams",
       "url": "https://www.savemyexams.com/",
-      "logo": ""
+      "logo": "https://cdn.savemyexams.com/logo/sme-logo-3line.svg"
     },
     {
       "name": "Domain.Me",
       "url": "https://domain.me/",
-      "logo": ""
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/Domainme.png"
     }
   ],
   "notice": "",
@@ -21,12 +21,12 @@
     {
       "name": "SaveMyExams",
       "url": "https://www.savemyexams.com/",
-      "logo": "assets/sponsors/savemyexams.png"
+      "logo": "https://cdn.savemyexams.com/logo/sme-logo-3line.svg"
     },
     {
       "name": "Domain.Me",
       "url": "https://domain.me/",
-      "logo": "assets/sponsors/domainme.png"
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/Domainme.png"
     }
   ]
 }
