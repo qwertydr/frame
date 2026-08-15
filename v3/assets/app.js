@@ -339,7 +339,7 @@ async function renderVideo(id,language,t){
 
         <img
           class="player-brand"
-          src="assets/logo-watermark.svg"
+          src="assets/hat-svgrepo-com.svg"
           alt=""
           draggable="false">
 
