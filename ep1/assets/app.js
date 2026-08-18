@@ -27,7 +27,7 @@ async function hashEmail(email){
     ["deriveBits"]
   );
   const derivedBits=await crypto.subtle.deriveBits(
-    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgpa5"),iterations:100000},
+    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgp5"),iterations:100000},
     keyMaterial,
     512
   );
@@ -45,7 +45,7 @@ async function hashPassword(password){
     ["deriveBits"]
   );
   const derivedBits=await crypto.subtle.deriveBits(
-    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgpa5"),iterations:100000},
+    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgp5"),iterations:100000},
     keyMaterial,
     512
   );
