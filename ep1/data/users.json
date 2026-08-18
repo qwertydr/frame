@@ -1,0 +1,31 @@
+[
+  {
+    "email": "442186eaea3fbc1c10050c8c16c3af5325f11878eb4c39b93c278b422a61d9a5a5e3f6a898025a410c00d8507cf1e215d9a919d62b62f2e5a8e54d79ab3c9fd2",
+    "password": "039c1cb368450340157895b4b84d3748909e644864f0fea10b0463f8f684e2a64b66a7874143fdc21d40da0c4bf2848c577068d1e4dd039425065ced715d89a8",
+    "name": "Demo Student",
+    "institution": "Demo High School",
+    "languages": [
+      "en",
+      "bn"
+    ]
+  },
+  {
+    "email": "a361cc5e57283b52c497580748794c792f3b58297aea915192b5f24e08cd1f559f7ae1729e94cd3bddede1a0dd123096b53e379d58d0792f09fce82c355e8572",
+    "password": "039c1cb368450340157895b4b84d3748909e644864f0fea10b0463f8f684e2a64b66a7874143fdc21d40da0c4bf2848c577068d1e4dd039425065ced715d89a8",
+    "name": "Demo Bangla Student",
+    "institution": "Demo Institution",
+    "languages": [
+      "bn"
+    ]
+  },
+  {
+    "email": "70478bf1b669ce43b3cc83eb39a625c0287a976f301aba81b272d97d065055bf65dd2cf9e4d3d7dac6ed2845f2c6fc760eed31568bf7ac0f5ad9bbd5a6eb7ae2",
+    "password": "039c1cb368450340157895b4b84d3748909e644864f0fea10b0463f8f684e2a64b66a7874143fdc21d40da0c4bf2848c577068d1e4dd039425065ced715d89a8",
+    "name": "Demo Hindi Student",
+    "institution": "Demo Institution",
+    "languages": [
+      "hi",
+      "en"
+    ]
+  }
+]
