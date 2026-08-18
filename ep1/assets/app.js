@@ -16,40 +16,94 @@ async function loadJSON(path){
   return response.json();
 }
 
-async function hashEmail(email){
-  const encoder=new TextEncoder();
-  const normalized=String(email||"").trim().toLowerCase();
-  const keyMaterial=await crypto.subtle.importKey(
+// ১. ইমেইল হ্যাশিং ফাংশন
+async function hashEmail(email) {
+  const encoder = new TextEncoder();
+  const normalized = String(email || "").trim().toLowerCase();
+  const keyMaterial = await crypto.subtle.importKey(
     "raw",
     encoder.encode(normalized),
     "PBKDF2",
     false,
     ["deriveBits"]
   );
-  const derivedBits=await crypto.subtle.deriveBits(
-    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgp5"),iterations:100000},
+  const derivedBits = await crypto.subtle.deriveBits(
+    { name: "PBKDF2", hash: "SHA-256", salt: encoder.encode("iamgp5"), iterations: 100000 },
     keyMaterial,
     512
   );
-  return Array.from(new Uint8Array(derivedBits),b=>b.toString(16).padStart(2,"0")).join("");
+  return Array.from(new Uint8Array(derivedBits), b => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function hashPassword(password){
-  const encoder=new TextEncoder();
-  const keyMaterial=await crypto.subtle.importKey(
+// ২. পাসওয়ার্ড হ্যাশিং ফাংশন
+async function hashPassword(password) {
+  const encoder = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey(
     "raw",
     encoder.encode(password),
     "PBKDF2",
     false,
     ["deriveBits"]
   );
-  const derivedBits=await crypto.subtle.deriveBits(
-    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgp5"),iterations:100000},
+  const derivedBits = await crypto.subtle.deriveBits(
+    { name: "PBKDF2", hash: "SHA-256", salt: encoder.encode("iamgp5"), iterations: 100000 },
     keyMaterial,
     512
   );
-  return Array.from(new Uint8Array(derivedBits),b=>b.toString(16).padStart(2,"0")).join("");
+  return Array.from(new Uint8Array(derivedBits), b => b.toString(16).padStart(2, "0")).join("");
 }
+
+// ৩. নতুন সম্পূর্ণ go() লগইন ফাংশন
+const go = async () => {
+  const msg = document.querySelector("#msg");
+  try {
+    msg.textContent = "Checking authorization…";
+    msg.className = "form-message loading";
+
+    // JSON থেকে ইউজার লিস্ট নিয়ে আসা
+    const list = await fetch("users.json", { cache: "no-store" }).then(r => {
+      if (!r.ok) throw Error("Could not load participant data");
+      return r.json();
+    });
+
+    const rawEmail = String(document.querySelector("#email")?.value ?? "").trim();
+    const rawPassword = String(document.querySelector("#password")?.value ?? "");
+
+    // ইনপুট দুটিকে হ্যাশ করা
+    const emailHash = await hashEmail(rawEmail);
+    const passwordHash = await hashPassword(rawPassword);
+
+    // users.json-এর ইমেইল হ্যাশ এবং পাসওয়ার্ড হ্যাশের সাথে মেলানো
+    const x = Array.isArray(list) ? list.find(v => {
+      const storedEmailHash = String(v?.email ?? v?.email_hash ?? "").trim();
+      const storedPasswordHash = String(v?.password_hash ?? v?.password ?? "").trim();
+      return storedEmailHash === emailHash && storedPasswordHash === passwordHash;
+    }) : null;
+
+    if (!x) throw Error("Invalid email or password");
+
+    // সেশন তৈরি ও ডাটা সেভ
+    const user = { ...x, email: rawEmail };
+    user.session_id = crypto.randomUUID 
+      ? crypto.randomUUID() 
+      : `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+
+    localStorage.setItem("iarco_quiz_user", JSON.stringify(user));
+
+    if (typeof api === "function") await api("login", user);
+    if (typeof home === "function") await home();
+
+  } catch (e) {
+    msg.className = "form-message error";
+    msg.textContent = e.message || "Login failed";
+  }
+};
+
+// বাটন ও কি-বোর্ড ইভেন্ট হ্যান্ডলিং
+document.querySelector("#login").onclick = go;
+document.querySelectorAll("#email,#password").forEach(i => 
+  i.addEventListener("keydown", e => { if (e.key === "Enter") go(); })
+);
 
 async function prefetchPortalData(){
   if(state.loaded) return;
