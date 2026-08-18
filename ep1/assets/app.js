@@ -104,7 +104,7 @@ document.querySelector("#login").onclick = go;
 document.querySelectorAll("#email,#password").forEach(i => 
   i.addEventListener("keydown", e => { if (e.key === "Enter") go(); })
 );
-
+  
 async function prefetchPortalData(){
   if(state.loaded) return;
   const [users,timeline,modules,config]=await Promise.all([loadJSON("data/users.json"),loadJSON("data/timeline.json"),loadJSON("data/modules.json"),loadJSON("data/config.json")]);
