@@ -16,95 +16,42 @@ async function loadJSON(path){
   return response.json();
 }
 
-// ১. ইমেইল হ্যাশিং ফাংশন
-async function hashEmail(email) {
-  const encoder = new TextEncoder();
-  const normalized = String(email || "").trim().toLowerCase();
-  const keyMaterial = await crypto.subtle.importKey(
+async function hashEmail(email){
+  const encoder=new TextEncoder();
+  const normalized=String(email||"").trim().toLowerCase();
+  const keyMaterial=await crypto.subtle.importKey(
     "raw",
     encoder.encode(normalized),
     "PBKDF2",
     false,
     ["deriveBits"]
   );
-  const derivedBits = await crypto.subtle.deriveBits(
-    { name: "PBKDF2", hash: "SHA-256", salt: encoder.encode("iamgp5"), iterations: 100000 },
+  const derivedBits=await crypto.subtle.deriveBits(
+    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgpa5"),iterations:100000},
     keyMaterial,
     512
   );
-  return Array.from(new Uint8Array(derivedBits), b => b.toString(16).padStart(2, "0")).join("");
+  return Array.from(new Uint8Array(derivedBits),b=>b.toString(16).padStart(2,"0")).join("");
 }
 
-// ২. পাসওয়ার্ড হ্যাশিং ফাংশন
-async function hashPassword(password) {
-  const encoder = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey(
+async function hashPassword(password){
+  const encoder=new TextEncoder();
+  const normalized=String(password||"").trim();
+  const keyMaterial=await crypto.subtle.importKey(
     "raw",
-    encoder.encode(password),
+    encoder.encode(normalized),
     "PBKDF2",
     false,
     ["deriveBits"]
   );
-  const derivedBits = await crypto.subtle.deriveBits(
-    { name: "PBKDF2", hash: "SHA-256", salt: encoder.encode("iamgp5"), iterations: 100000 },
+  const derivedBits=await crypto.subtle.deriveBits(
+    {name:"PBKDF2",hash:"SHA-256",salt:encoder.encode("iamgpa5"),iterations:100000},
     keyMaterial,
     512
   );
-  return Array.from(new Uint8Array(derivedBits), b => b.toString(16).padStart(2, "0")).join("");
+  return Array.from(new Uint8Array(derivedBits),b=>b.toString(16).padStart(2,"0")).join("");
 }
 
-// ৩. নতুন সম্পূর্ণ go() লগইন ফাংশন
-const go = async () => {
-  const msg = document.querySelector("#msg");
-  try {
-    msg.textContent = "Checking authorization…";
-    msg.className = "form-message loading";
-
-    // JSON থেকে ইউজার লিস্ট নিয়ে আসা
-    const list = await fetch("users.json", { cache: "no-store" }).then(r => {
-      if (!r.ok) throw Error("Could not load participant data");
-      return r.json();
-    });
-
-    const rawEmail = String(document.querySelector("#email")?.value ?? "").trim();
-    const rawPassword = String(document.querySelector("#password")?.value ?? "");
-
-    // ইনপুট দুটিকে হ্যাশ করা
-    const emailHash = await hashEmail(rawEmail);
-    const passwordHash = await hashPassword(rawPassword);
-
-    // users.json-এর ইমেইল হ্যাশ এবং পাসওয়ার্ড হ্যাশের সাথে মেলানো
-    const x = Array.isArray(list) ? list.find(v => {
-      const storedEmailHash = String(v?.email ?? v?.email_hash ?? "").trim();
-      const storedPasswordHash = String(v?.password_hash ?? v?.password ?? "").trim();
-      return storedEmailHash === emailHash && storedPasswordHash === passwordHash;
-    }) : null;
-
-    if (!x) throw Error("Invalid email or password");
-
-    // সেশন তৈরি ও ডাটা সেভ
-    const user = { ...x, email: rawEmail };
-    user.session_id = crypto.randomUUID 
-      ? crypto.randomUUID() 
-      : `${Date.now()}_${Math.random().toString(36).slice(2)}`;
-
-    localStorage.setItem("iarco_quiz_user", JSON.stringify(user));
-
-    if (typeof api === "function") await api("login", user);
-    if (typeof home === "function") await home();
-
-  } catch (e) {
-    msg.className = "form-message error";
-    msg.textContent = e.message || "Login failed";
-  }
-};
-
-// বাটন ও কি-বোর্ড ইভেন্ট হ্যান্ডলিং
-document.querySelector("#login").onclick = go;
-document.querySelectorAll("#email,#password").forEach(i => 
-  i.addEventListener("keydown", e => { if (e.key === "Enter") go(); })
-);
-  
 async function prefetchPortalData(){
   if(state.loaded) return;
   const [users,timeline,modules,config]=await Promise.all([loadJSON("data/users.json"),loadJSON("data/timeline.json"),loadJSON("data/modules.json"),loadJSON("data/config.json")]);
@@ -137,7 +84,6 @@ function logout(){
   location.hash="";
   renderLogin();
 }
-
 
 function cfg(){return state.config||{year:"2026",brand:"IARCO 2026",sponsors:[],notice:"",faqUrl:"#",supportEmail:"iarco2026@yrjmail.com"};}
 function sponsorHTML(){
@@ -329,16 +275,22 @@ function renderLogin(message=""){
   document.getElementById("loginForm").addEventListener("submit",async e=>{
     e.preventDefault();
     const button=document.getElementById("loginButton");
-    const email=document.getElementById("loginEmail").value.trim().toLowerCase();
-    const password=document.getElementById("loginPassword").value;
+    const rawEmail=document.getElementById("loginEmail").value;
+    const rawPassword=document.getElementById("loginPassword").value;
+    
     button.disabled=true;
     button.innerHTML='<span class="button-spinner"></span> Loading…';
 
     try{
       await prefetchPortalData();
-      const [emailHash,passwordHash]=await Promise.all([hashEmail(email),hashPassword(password)]);
+      const [emailHash,passwordHash]=await Promise.all([hashEmail(rawEmail),hashPassword(rawPassword)]);
       const user=state.users.find(u=>String(u.email||"").toLowerCase()===emailHash&&String(u.password||"").toLowerCase()===passwordHash);
-      if(!user){renderLogin("Invalid email or password.");return;}
+      if(!user){
+        button.disabled=false;
+        button.textContent="Login";
+        renderLogin("Invalid email or password.");
+        return;
+      }
 
       state.user={
         email:user.email,
@@ -439,21 +391,8 @@ function renderDashboard(){
 
 function resourceButton(resource){
   const value=String(resource||"").trim();
-
-  if(!value){
-    return "";
-  }
-
-  return `
-    <a
-      class="btn secondary"
-      target="_blank"
-      rel="noopener noreferrer"
-      href="${esc(value)}"
-    >
-      Resources
-    </a>
-  `;
+  if(!value) return "";
+  return `<a class="btn secondary" target="_blank" rel="noopener noreferrer" href="${esc(value)}">Resources</a>`;
 }
 
 function renderModules(){
@@ -854,9 +793,6 @@ async function renderVideo(id,language,token){
       else if(player && player.getPlayerState?.()===YT.PlayerState.PLAYING) status.textContent='Playing';
     }
 
-    // Request 480p when YouTube exposes that quality, but never treat a temporary
-    // quality-report mismatch as a buffering state. The network decides when
-    // actual buffering is required; the learner should keep seeing the video.
     function force480(){
       if(!player) return false;
       try{
@@ -954,7 +890,6 @@ async function renderVideo(id,language,token){
             refreshState();
           },
           onPlaybackQualityChange(){
-            // Re-request 480p when available, but do not flash a buffering veil.
             force480();
             refreshState();
           },
@@ -1049,7 +984,6 @@ async function renderVideo(id,language,token){
 function notFound(){
   ROOT.innerHTML=`<div class="error-page"><main><div class="error-code">404</div><h1>Invalid or expired lesson link</h1><p class="muted">The requested lesson route is not valid in this session.</p><a class="btn" href="${location.pathname}">Return to Portal</a></main></div>`;
 }
-
 
 function bindMotionEffects(){
   document.querySelectorAll('.btn,.side-action,.player-control-btn,.play-big,.module-head,.lecture-row').forEach(el=>{
